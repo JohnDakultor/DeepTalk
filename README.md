@@ -32,7 +32,7 @@ This project consists of two main components:
 
 2. Install frontend dependencies:
     ```bash
-    cd frontend
+    cd Deeptalk
     npm install
     # or
     yarn install
@@ -40,7 +40,7 @@ This project consists of two main components:
 
 3. Install backend dependencies:
     ```bash
-    cd ../backend
+    cd Backend
     npm install
     # or
     yarn install
