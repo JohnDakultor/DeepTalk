@@ -17,7 +17,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { LogoutOutlined } from '@mui/icons-material';
 import AdbIcon from '@mui/icons-material/Adb';
-import authService from '../../services/authService';
+import authService from '../../services/Axios';
 import { useAuth } from "../../services/Authentication";
 import { Link } from "react-router-dom";
 

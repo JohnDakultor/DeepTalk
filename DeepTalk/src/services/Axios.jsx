@@ -21,7 +21,7 @@ const signup = async (firstName, lastName, email, password) => {
 
 const login = async (email, password) => {
   try {
-    const response = await Axios.post(`http://localhost:${port}/login`, { // Use the port variable
+    const response = await Axios.post(`http://localhost:${port}/api/login`, { // Use the port variable
       email,
       password,
     });
@@ -30,6 +30,14 @@ const login = async (email, password) => {
     throw new Error("Login failed"); // Handle login failure
   }
 };
+
+// const tokenLoggedOut = () => {
+//   try{
+//     const response = await Axios.post(`https://localhost:${port}/userData`, {
+//       token: jwtToken
+//     })
+//   }
+// }
 
 
 

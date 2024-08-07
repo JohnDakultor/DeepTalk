@@ -18,7 +18,7 @@ import XIcon from "@mui/icons-material/X";
 import Axios from "axios";
 import DoneIcon from "@mui/icons-material/Done";
 import { Link } from "react-router-dom";
-import authService from "../services/authService";
+import authService from "../services/Axios";
 
 export default function SignUp() {
   const [firstName, setFirstName] = useState("");

@@ -19,7 +19,7 @@ import { useAuth } from "../services/Authentication";
 
 // import { useDispatch, useSelector } from "react-redux";
 // import { setIsFetching, loginSuccess, loginFailure } from "../redux/userSlice";
-import authService from "../services/authService";
+import authService from "../services/Axios";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -80,7 +80,7 @@ export default function LoginPage() {
                 setLoginStatus(true)
                 localStorage.setItem('jwt', res.data.token) // Save JWT in local storage
                 auth.login(res.data.result); // Log in with user sent from Express
-                navigate('/productui', {replace: true});
+                navigate('/dashboard', {replace: true});
             }else {
                 setLoginStatus(false);
             }

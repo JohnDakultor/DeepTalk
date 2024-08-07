@@ -14,9 +14,12 @@ import Stream from "node-rtsp-stream";
 import {Server as HttpServer} from "http";
 import {createReadStream} from "fs";
 import ffmpeg from 'fluent-ffmpeg';
+import gpt4 from "./services/gpt4";
+
 import env from "dotenv";
 import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
+
 
 
 
@@ -258,29 +261,59 @@ app.post("/signup", async (req, res) => {
     res.status(500).send("Error creating user");
   }
 });
-// Server config
 
-// app.post("/api/tts", async (req, res) => {
-//   try {
-//     const { text } = req.body;
-//     const apiKey = process.env.GOOGLE_TTS_KEY;
+app.get("/user", verifyJWT, async (req, res) => {
+  try{
+  const Users = await createBookshelfOf("user_accounts");
+  const user = await new Users({ id: req.userId }).fetch();
 
-//     const response = await axios.post(
-//       `https://texttospeech.googleapis.com/v1/text:synthesize?key=${apiKey}`,
-//       {
-//         input: { text },
-//         voice: { languageCode: "en-US", ssmlGender: "FEMALE" },
-//         audioConfig: { audioEncoding: "MP3" },
-//       }
-//     );
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  
+  const userData = user.toJSON();
+  return res.status(200).json({ result: userData });
+} catch (error) {
+  console.error(error);
+  return res.status(500).json({ message: "error fetching data" });
+}
+});
 
-//     res.json(response.data);
-//   } catch (error) {
-//     console.error("Error generating speech", error);
-//     res.status(500).send("Error generating speech");
-//   }
-// });
 
+app.post("/userData",  async (req, res) => {
+  const {token} = req.body;
+  try{
+    const user = jwt.verify(token, process.env.JWT_KEY, (err, res) => {
+      if(err){
+        return "Token has expired"
+      }
+      return res;
+    });
+    console.log(user)
+    if(user === "Token has expired"){
+      return res.send({status: "error", data: "Token expired"})
+    }
+    const useremail = user.email;
+    User.findOne({ email: useremail })
+      .then((data) => {
+        res.send({ status: "ok", data: data });
+      })
+      .catch((error) => {
+        res.send({ status: "error", data: error });
+      });
+  } catch (error) {}
+})
+
+app.post("/api/GPT4" , async (req, res) => {
+  const {prompt} = req.body;
+  if(!prompt){
+    return res.send({status: "error", data: "Prompt is required"})
+  }
+
+  const response = await gpt4(prompt);
+  res.send({status: "ok", data: response})
+
+})
 
 
 
@@ -288,3 +321,12 @@ app.post("/signup", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
+
+
+// import app from "./app.js";
+
+// const PORT = process.env.PORT || 3001;
+
+// app.listen(PORT, () => {
+//   console.log(`Server is running on port ${PORT}.`);
+// });

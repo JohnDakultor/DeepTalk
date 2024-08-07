@@ -14,8 +14,9 @@ import { Send, VolumeUp, Mic, MicOff } from "@mui/icons-material";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 import ProductDrawer from "../../components/prodoctComponents/ProductDrawer";
 import gpt4 from "../../api/gpt4";
+import withUserData from '../../components/UserData'
 
-export default function Talk() {
+const Talk = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [timeoutId, setTimeoutId] = useState(null);
@@ -167,7 +168,7 @@ export default function Talk() {
               <Typography
                 component="div"
                 sx={{
-                  whiteSpace: "pre-wrap", // Preserve whitespace for code blocks
+                  whiteSpace: "pre-wrap", 
                 }}
               >
                 {message.content.includes("```") ? (
@@ -177,9 +178,9 @@ export default function Talk() {
                       padding: "5px",
                       borderRadius: "5px",
                       overflowX: "auto",
-                      fontSize: "0.75rem", // Smaller font size
-                      maxWidth: "90%", // Ensure it doesn't cover the text
-                      wordBreak: "break-all", // Break long words
+                      fontSize: "0.75rem", 
+                      maxWidth: "90%", 
+                      wordBreak: "break-all", 
                     }}
                   >
                     <code>{message.content.replace(/```/g, '')}</code>
@@ -248,3 +249,5 @@ export default function Talk() {
     </>
   );
 }
+
+export default withUserData(Talk);

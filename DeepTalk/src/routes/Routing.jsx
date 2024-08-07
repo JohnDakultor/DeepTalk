@@ -6,7 +6,6 @@ import LoginPage from "../pages/LoginPage";
 import Pricing from "../pages/Pricing";
 import Product from "../pages/Product";
 import SignUp from "../pages/SignUp";
-import ProductUI from "../model/ProductUI";
 import ReqAut from "../utils/ReqAuth"
 import { AuthProvider } from "../services/Authentication";
 import Dashboard from "../model/productPages/Dashboard";
@@ -20,7 +19,6 @@ export default function Navigation() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
 
-          <Route path="/productui" element={<ReqAut><ProductUI /></ReqAut>} />
           <Route path="/dashboard" element={<ReqAut><Dashboard /></ReqAut>} />
           <Route path="/talk" element={<ReqAut><Talk /></ReqAut>} />
 
