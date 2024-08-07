@@ -1,6 +1,6 @@
-# GPT Companion Project
+# GPT-Project
 
-Welcome to the GPT Companion Project! This project is a fun and experimental application that leverages GPT-4 to create an interactive companion experience. It is currently in its early stages of development.
+Welcome to the GPT Project! This project is a fun and experimental application that leverages GPT-4 to create an interactive companion experience. It is currently in its early stages of development.
 
 ## Overview
 
@@ -26,8 +26,8 @@ This project consists of two main components:
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/your-username/gpt-companion-project.git
-    cd gpt-companion-project
+    git clone https://github.com/your-username/Deeptalk.git
+    cd Deeptalk
     ```
 
 2. Install frontend dependencies:
@@ -56,7 +56,7 @@ This project consists of two main components:
 
 2. Start the frontend application:
     ```bash
-    cd ../frontend
+    cd Deeptalk
     npm run dev
     # or
     yarn start
@@ -66,7 +66,7 @@ The application should now be running on `http://localhost:5173` and for the bac
 
 ## Usage
 
-Interact with the GPT companion through the frontend interface. The backend will handle the requests and provide responses based on GPT-4.
+Interact with the GPT  through the frontend interface. The backend will handle the requests and provide responses based on GPT-4.
 
 ## Contributing
 
