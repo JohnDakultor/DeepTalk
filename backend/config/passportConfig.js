@@ -1,13 +1,16 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import bcrypt from "bcryptjs";
-import { User } from "../models/userModel.js";
+import { createBookshelfModel } from "../models/userModel.js";
+
+
 
 passport.use(
   new LocalStrategy(
     { usernameField: "email" },
     async (email, password, done) => {
       try {
+        const User = createBookshelfModel("user_accounts");
         const user = await new User({ email: email }).fetch();
 
         if (!user) {
@@ -36,7 +39,8 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
   try {
-    const user = await new User({ id: id }).fetch();
+    const User = createBookshelfModel("user_accounts");
+    const user = await User.where({ id: id }).fetch();
     if (!user) {
       return done(new Error("User not found"));
     }

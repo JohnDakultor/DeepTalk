@@ -21,6 +21,7 @@ import { useAuth } from "../services/Authentication";
 // import { setIsFetching, loginSuccess, loginFailure } from "../redux/userSlice";
 import authService from "../services/Axios";
 
+
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -74,7 +75,7 @@ export default function LoginPage() {
             password: password,
         },
         withCredentials: true,
-        url: "http://localhost:3001/login",
+        url: "http://localhost:3001/api/login",
     }).then((res) => {
             if(res.data.auth === true){
                 setLoginStatus(true)
@@ -109,7 +110,7 @@ const handleSubmit = async (e) => {
   };
 
   return (
-    <div>
+    <div className="login-page">
       <Container
         maxWidth="xs"
         sx={{
@@ -224,8 +225,8 @@ const handleSubmit = async (e) => {
             </Button>
           </Box>
 
-          <Typography variant="body1" sx={{ mt: 2 }}>
-            Don't have an account? <Link to="/signup">Sign Up</Link>
+          <Typography variant="body1" sx={{ mt: 2,ml: 20, color:"black" }}>
+            Don't have an account? <Link to="/signup" style={{textDecoration:"none"}}>Sign Up</Link>
           </Typography>
         </Box>
       </Container>

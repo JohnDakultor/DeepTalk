@@ -8,8 +8,10 @@ import authRoutes from './routes/authRoutes.js';
 import './config/envConfig.js';
 import './config/passportConfig.js'; // Ensure passport configuration is loaded
 
+
 const app = express();
-const PORT = process.env.PORT || 3001;
+
+const PORT = process.env.PORT
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -42,6 +44,11 @@ app.use(methodOverride('__method'));
 
 app.use('/api', authRoutes);
 
+console.log("Database Password:", typeof process.env.DB_PASSWORD);
 
 
-export default app;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}.`);
+});
+
+//export default app;

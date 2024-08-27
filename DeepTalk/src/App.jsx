@@ -35,13 +35,13 @@ function App() {
  
 
   return (  
-    <>
+    <div className='App'>
 
       <ThemeProvider theme={theme}>
         <Routing />
       </ThemeProvider>
      
-    </>
+    </div>
   )
 }
 

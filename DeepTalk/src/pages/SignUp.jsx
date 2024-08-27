@@ -270,8 +270,8 @@ export default function SignUp() {
         </Fade>
       </Modal>
 
-      <Typography variant="body1" sx={{ mt: 2, mb: 2, textAlign: "end",  }}>
-          <Link to="/login">Already have an account?</Link>
+      <Typography variant="body1" sx={{ mt: 2, mb: 2, textAlign: "end" }}>
+          <Link to="/login" style={{ textDecoration: "none" }}>Already have an account?</Link>
         </Typography>
     </Container>
   );

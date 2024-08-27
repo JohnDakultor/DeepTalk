@@ -13,8 +13,14 @@ import {
 import { Send, VolumeUp, Mic, MicOff } from "@mui/icons-material";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 import ProductDrawer from "../../components/prodoctComponents/ProductDrawer";
-import gpt4 from "../../api/gpt4";
-import withUserData from '../../components/UserData'
+import { gpt4 } from "../../services/Axios";
+import withUserData from '../../components/UserData';
+//import settings from "../productPages/Settings";
+
+const getSettings = () => {
+  const savedSettings = JSON.parse(localStorage.getItem("settings"));
+  return savedSettings || { voiceName: "", rate: 1, pitch: 1 };
+};
 
 const Talk = () => {
   const [messages, setMessages] = useState([]);
@@ -26,6 +32,14 @@ const Talk = () => {
   const audioContextRef = useRef(null);
   const analyserRef = useRef(null);
   const dataArrayRef = useRef(null);
+  const [settings, setSettings] = useState(getSettings());
+  
+ 
+  
+  useEffect(() => {
+    const loadedSettings = getSettings();
+    setSettings(loadedSettings);
+  }, []);
 
   useEffect(() => {
     if (!audioContextRef.current) {
@@ -92,31 +106,58 @@ const Talk = () => {
       const newMessages = [...messages, { role: "user", content: input }];
       setMessages(newMessages);
       setInput("");
-
-      const response = await gpt4(input);
-
-      const updatedMessages = [
-        ...newMessages,
-        { role: "assistant", content: response },
-      ];
-      setMessages(updatedMessages);
-
-      readAloud(response);
-    }
-
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-      setTimeoutId(null);
+  
+      try {
+        const response = await gpt4(input);  // API call to GPT-4
+  
+        // Log the entire response to see its structure
+        console.log("API Response:", response);
+  
+        // Ensure response.data is a string or provide a default value
+        const responseData = typeof response.data === 'string' ? "No response from API" : response;
+        
+        const updatedMessages = [
+          ...newMessages,
+          { role: "assistant", content: responseData }, // Ensure the response structure is correct
+        ];
+        setMessages(updatedMessages);
+  
+        readAloud(responseData);  // Use responseData directly
+      } catch (error) {
+        console.error("Error occurred while fetching GPT-4 response:", error);
+        // Log more details about the error
+        console.error("Error details:", error.response ? error.response.data : error.message);
+        // Optionally show an error message to the user
+        setMessages([...newMessages, { role: "assistant", content: "Something went wrong. Please try again later." }]);
+      }
+  
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+        setTimeoutId(null);
+      }
     }
   };
+  
 
   const readAloud = (text) => {
     const utterance = new SpeechSynthesisUtterance(text);
+     // Find and set voice if available, else fallback to default
+  const selectedVoice = window.speechSynthesis.getVoices().find(voice => voice.name === settings.voiceName);
+  utterance.voice = selectedVoice || window.speechSynthesis.getVoices()[0];
+
+  // Validate and set rate (must be between 0.1 and 10)
+  const rate = parseFloat(settings.rate);
+  utterance.rate = isFinite(rate) && rate >= 0.1 && rate <= 10 ? rate : 1;
+
+  // Validate and set pitch (must be between 0 and 2)
+  const pitch = parseFloat(settings.pitch);
+  utterance.pitch = isFinite(pitch) && pitch >= 0 && pitch <= 2 ? pitch : 1;
+  utterance.lang = settings.language || 'en-US';
     window.speechSynthesis.speak(utterance);
   };
 
   const handleReadLastMessage = () => {
-    const lastMessage = messages.findLast((msg) => msg.role === "assistant");
+    const lastMessage = messages.slice().reverse().find((msg) => msg.role === "assistant");
     if (lastMessage) {
       readAloud(lastMessage.content);
     }
@@ -171,7 +212,7 @@ const Talk = () => {
                   whiteSpace: "pre-wrap", 
                 }}
               >
-                {message.content.includes("```") ? (
+                {typeof message.content === 'string' && message.content.includes("```") ? (
                   <Box
                     sx={{  
                       color: "black",
@@ -209,41 +250,59 @@ const Talk = () => {
           }}
         >
           <TextField
-            margin="normal"
-            fullWidth
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            sx={{ flexGrow: 1 }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    color="primary"
-                    onClick={handleSendMessage}
-                    edge="end"
-                  >
-                    <Send />
-                  </IconButton>
-                  <IconButton
-                    color="primary"
-                    onClick={handleReadLastMessage}
-                    edge="end"
-                    sx={{ ml: 2 }}
-                  >
-                    <VolumeUp />
-                  </IconButton>
-                  <IconButton
-                    color="primary"
-                    onClick={handleMicClick}
-                    edge="end"
-                    sx={{ ml: 2 }}
-                  >
-                    {listening ? <Mic /> : <MicOff />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
+  margin="normal"
+  fullWidth
+  className="input"
+  value={input}
+  onChange={(e) => setInput(e.target.value)}
+  sx={{
+    flexGrow: 1,
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: 'var(--input-border-color)',
+      },
+      '&:hover fieldset': {
+        borderColor: 'var(--input-border-color)',
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: 'var(--input-border-color)',
+      },
+    },
+    '& .MuiInputBase-input': {
+      color: 'var(--primary-text-color)',
+    },
+  }}
+  InputProps={{
+    endAdornment: (
+      <InputAdornment position="end">
+        <IconButton
+          sx={{ color: 'var(--icon-color)' }}
+          onClick={handleSendMessage}
+          edge="end"
+        >
+          <Send />
+        </IconButton>
+        <IconButton
+          sx={{ color: 'var(--icon-color)' }}
+          onClick={handleReadLastMessage}
+          edge="end"
+          
+        >
+          <VolumeUp />
+        </IconButton>
+        <IconButton
+          sx={{ color: 'var(--icon-color)' }}
+          onClick={handleMicClick}
+          edge="end"
+          
+        >
+          {listening ? <Mic /> : <MicOff />}
+        </IconButton>
+      </InputAdornment>
+    ),
+  }}
+/>
+
         </Box>
       </Container>
     </>

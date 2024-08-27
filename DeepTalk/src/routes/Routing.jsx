@@ -10,6 +10,7 @@ import ReqAut from "../utils/ReqAuth"
 import { AuthProvider } from "../services/Authentication";
 import Dashboard from "../model/productPages/Dashboard";
 import Talk from "../model/productPages/Talk"
+import Settings from  "../model/productPages/Settings";
 
 export default function Navigation() {
   return (
@@ -18,9 +19,11 @@ export default function Navigation() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
-
+          
           <Route path="/dashboard" element={<ReqAut><Dashboard /></ReqAut>} />
           <Route path="/talk" element={<ReqAut><Talk /></ReqAut>} />
+
+          <Route path="/settings" element={<ReqAut><Settings /></ReqAut>} />
 
           <Route path="/login" element={<LoginPage />} />
           <Route path="/product" element={<Product />} />

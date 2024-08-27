@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -12,7 +12,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { Switch, ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, List } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import RecordVoiceOverIcon from '@mui/icons-material/RecordVoiceOver';
-import HistoryIcon from '@mui/icons-material/History';
+import WalletIcon from '@mui/icons-material/Wallet';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { LogoutOutlined } from '@mui/icons-material';
@@ -20,6 +20,7 @@ import AdbIcon from '@mui/icons-material/Adb';
 import authService from '../../services/Axios';
 import { useAuth } from "../../services/Authentication";
 import { Link } from "react-router-dom";
+import useLocalStorage from "use-local-storage";
 
 const drawerWidth = 240;
 
@@ -73,13 +74,16 @@ export default function ProductDrawer() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [logOut, setLogOut] = useState(false)
+  const [darkMode, setDarkMode] = useLocalStorage("darkMode", false)
+
+
   
   const auth = useAuth()
 
   const productPages = [
     {name: "Dashboard", path:"/dashboard"},
     {name: "Talk", path:"/talk"},
-    {name: "Log", path:"/log"},
+    {name: "Wallet", path:"/wallet"},
     {name: "Notifications", path:"/notifications"},
     {name: "Settings", path: "/settings"}
   ]
@@ -100,6 +104,14 @@ export default function ProductDrawer() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light')
+  }, [darkMode])
+
+  const handleThemeToggle = () => {
+    setDarkMode(!darkMode);
+  }
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -130,6 +142,9 @@ export default function ProductDrawer() {
       boxSizing: 'border-box',
       overflowX: 'hidden',
       overflowY: 'hidden',
+      backgroundColor: darkMode ? '#222222' : 'primary',
+      color: darkMode ? 'white' : 'black',
+      
     },
   }}
   variant="persistent"
@@ -137,40 +152,55 @@ export default function ProductDrawer() {
   open={open}
 >
   <DrawerHeader>
-    <IconButton onClick={handleDrawerClose}>
-      {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-    </IconButton>
+  <IconButton 
+    onClick={handleDrawerClose}
+    sx={{ color: darkMode ? 'white' : 'black' }}
+  >
+    {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+  </IconButton>
   </DrawerHeader>
-  <Divider />
+  <Divider sx={{borderColor: darkMode ? 'white' : 'black'}}/>
   <List>
     {productPages.map((page, index) => (
       <ListItem key={index} disablePadding>
         <ListItemButton disableRipple sx={{":hover":{color:"black", textDecoration:"underline"}}} component={Link} to={page.path}>
-          <ListItemIcon>
-            {index === 0 && <DashboardIcon color='primary' />} 
-            {index === 1 && <RecordVoiceOverIcon color='primary' />}
-            {index === 2 && <HistoryIcon color='primary' />}
-            {index === 3 && <NotificationsIcon color='primary' />}
-            {index === 4 && <SettingsIcon color='primary' />}
+          <ListItemIcon sx={{color: darkMode ? 'white' : 'black'}}>
+            {index === 0 && <DashboardIcon />} 
+            {index === 1 && <RecordVoiceOverIcon  />}
+            {index === 2 && <WalletIcon  />}
+            {index === 3 && <NotificationsIcon  />}
+            {index === 4 && <SettingsIcon  />}
           </ListItemIcon>
           <ListItemText primary={page.name} />
         </ListItemButton>
       </ListItem>
     ))}
   </List>
-  <Divider />
+  <Divider sx={{borderColor: darkMode ? 'white' : 'black'}}/>
   <List>
-    <ListItem>
-      <ListItemText primary="Night Mode" />
-      <Switch />
-    </ListItem> 
-  </List>
-  <Divider />
+          <ListItem>
+            <ListItemText primary="Night Mode" />
+            <Switch
+              checked={darkMode}
+              onChange={handleThemeToggle}
+              sx={{
+                '& .MuiSwitch-switchBase.Mui-checked': {
+                  color: darkMode ? '#1976d2' : 'blue', // Change to blue in dark mode
+                },
+                
+                '& .MuiSwitch-track': {
+                  backgroundColor: darkMode ? '#444' : '#ccc',
+                },
+              }}
+            />
+          </ListItem>
+        </List>
+  <Divider sx={{borderColor: darkMode ? 'white' : 'black'}} />
   <List>
     <ListItem onClick={handleLogout}>
-      <ListItemButton sx={{border: "1px solid black", borderRadius:"20px"}}>
-        <ListItemIcon>
-          <LogoutOutlined color='primary' />
+      <ListItemButton sx={{border: "1px solid", borderRadius:"20px", color: darkMode ? 'white' : 'black'}}>
+        <ListItemIcon sx={{color: darkMode ? 'white' : 'black'}}>
+          <LogoutOutlined />
         </ListItemIcon>
         <ListItemText primary="Logout" />
       </ListItemButton>

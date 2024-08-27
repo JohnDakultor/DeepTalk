@@ -1,8 +1,10 @@
 import { bookshelfInstance } from "../config/dbConfig.js";
 
-const User = bookshelfInstance.Model.extend({
-  tableName: "user_accounts",
-  idAttribute: "id",
-});
+const createBookshelfModel = (tableName) => {
+  return bookshelfInstance.Model.extend({
+    tableName: tableName,
 
-export { User };
+  });
+};
+
+export { createBookshelfModel };

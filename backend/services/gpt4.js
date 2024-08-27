@@ -15,7 +15,7 @@ const envFile = resolve(__dirname, "env", ".env");
 
 env.config({ path: envFile });
 
-const gpt4 = async (message) => {
+export const gpt4 = async (message) => {
     const options = {
       method: 'POST',
       url: 'https://chatgpt-42.p.rapidapi.com/conversationgpt4-2',

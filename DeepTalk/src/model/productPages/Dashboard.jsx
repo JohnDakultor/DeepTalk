@@ -75,7 +75,7 @@
 // Dashboard.js
 import React, { useEffect, useState } from 'react';
 import ProductDrawer from '../../components/prodoctComponents/ProductDrawer';
-import { AppBar, Toolbar, Grid } from '@mui/material';
+import { AppBar, Toolbar, Grid, responsiveFontSizes } from '@mui/material';
 import Cards from '../../components/Cards';
 import axios from 'axios';
 import Carousel from '../../components/Carousel';
@@ -88,7 +88,7 @@ const Dashboard = () => {
         const fetchUser = async () => {
           try { 
             const token = localStorage.getItem("jwt");
-            const response = await axios.get("http://localhost:3001/user", {
+            const response = await axios.get("http://localhost:3001/api/user", {
               headers:{"x-access-token":token},
             });
     
@@ -118,30 +118,32 @@ const Dashboard = () => {
       </AppBar>
       <Toolbar />
       <Grid container spacing={3} style={{ padding: 24 }}>
+        <Grid item xs={12} md={4}>
+          <Cards
+            title={`Welcome, ${user}!`}
+            content="Your Dashboard"
+            customStyles={{ height: '250px', width: '100%', display: 'flex', justifyContent: 'top', alignItems: 'left' }}
+          />
+        </Grid>
         <Grid item xs={12} md={8}>
           <Cards
-            title={`Welcome, ${user}`}
-            customStyles={{ height: '200px', width: '100%' }}
-          />
+            customStyles={{ height: '250px', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+          >
+            <Carousel images={images} />
+          </Cards>
         </Grid>
         <Grid item xs={12} md={4}>
           <Cards
-            title="Card 2"
-            content="This is card 2"
-            customStyles={{ height: '200px', width: '100%' }}
-          />
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <Cards
-            title="Card 3"
-            content="This is card 3"
+            title="Charts"
             customStyles={{ height: '400px', width: '100%' }}
           />
         </Grid>
         <Grid item xs={12} md={8}>
-          <Cards customStyles={{ height: '400px', width: '100%' }}>
-            <Carousel images={images} />
-          </Cards>
+          <Cards customStyles={{ height: '400px', width: '100%' }}
+            title="Ads"
+          />
+            
+         
         </Grid>
       </Grid>
     </div>
