@@ -18,6 +18,7 @@ html, body {
   --input-border-color: #0a0a0a;
   --icon-color: #0a0a0a;
   --button-color: #ffffff;
+  --modal-color: #D3D3D3;
 }
 
 [data-theme="dark"] {
@@ -28,5 +29,6 @@ html, body {
   --input-border-color: #f6f6f6; /* White border for input in dark mode */
   --icon-color: #f6f6f6; /* White icons in dark mode */
   --button-color: #4A4A4A;
+  --modal-color:#4A4A4A;
 }
 

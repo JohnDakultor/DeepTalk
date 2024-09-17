@@ -13,9 +13,6 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import GoogleIcon from "@mui/icons-material/Google";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import XIcon from "@mui/icons-material/X";
-import Axios from "axios";
 import DoneIcon from "@mui/icons-material/Done";
 import { Link } from "react-router-dom";
 import authService from "../services/Axios";
@@ -222,22 +219,7 @@ export default function SignUp() {
           >
             Sign Up with Google
           </Button>
-          <Button
-            startIcon={<FacebookIcon />}
-            fullWidth
-            variant="contained"
-            sx={{ mb: 1, bgcolor: "#1877f2", color: "#fff" }}
-          >
-            Sign Up with Facebook
-          </Button>
-          <Button
-            startIcon={<XIcon />}
-            fullWidth
-            variant="contained"
-            sx={{ mb: 1, bgcolor: "#1DA1F2", color: "#fff" }}
-          >
-            Sign Up with X
-          </Button>
+          
         </Box>
       </Box>
       {/* Modal for success message */}

@@ -11,14 +11,10 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import GoogleIcon from "@mui/icons-material/Google";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import XIcon from "@mui/icons-material/X";
 import { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
 import { useAuth } from "../services/Authentication";
 
-// import { useDispatch, useSelector } from "react-redux";
-// import { setIsFetching, loginSuccess, loginFailure } from "../redux/userSlice";
 import authService from "../services/Axios";
 
 
@@ -196,15 +192,7 @@ const handleSubmit = async (e) => {
               <Divider sx={{ width: "45%" }} />
             </Box>
 
-            <Button
-              startIcon={<FacebookIcon />}
-              onClick={() => handleOAuthLogin("Facebook")}
-              fullWidth
-              variant="contained"
-              sx={{ bgcolor: "#1877f2", color: "#fff" }}
-            >
-              Login with Facebook
-            </Button>
+            
             <Button
               startIcon={<GoogleIcon />}
               onClick={() => handleOAuthLogin("Google")}
@@ -214,15 +202,7 @@ const handleSubmit = async (e) => {
             >
               Login with Google
             </Button>
-            <Button
-              startIcon={<XIcon />}
-              onClick={() => handleOAuthLogin("Twitter")}
-              fullWidth
-              variant="contained"
-              sx={{ mt: 1, bgcolor: "#1DA1F2", color: "#fff" }}
-            >
-              Login with X
-            </Button>
+           
           </Box>
 
           <Typography variant="body1" sx={{ mt: 2,ml: 20, color:"black" }}>

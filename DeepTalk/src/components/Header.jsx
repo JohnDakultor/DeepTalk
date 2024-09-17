@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -6,28 +6,28 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+import Button from "@mui/material/Button";
+import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const pages = [
-  { label: "Products", path: "/product" },
-  { label: "Pricing", path: "/pricing" },
+  { label: "products", path: "/product" },
+  { label: "pricing", path: "/pricing" },
 ];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
-const log = ["Login", "Sign up"];
 
-export default function Header({children}) {
+const log = ["login", "signUp"];
+
+export default function Header({ children }) {
+  const { t } = useTranslation();  // Hook to get translation function
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -100,7 +100,7 @@ export default function Header({children}) {
                     component={Link}
                     to={page.path}
                   >
-                    <Typography textAlign="center">{page.label}</Typography>
+                    <Typography textAlign="center">{t(page.label)}</Typography>
                   </MenuItem>
                 ))}
               </Menu>
@@ -139,7 +139,7 @@ export default function Header({children}) {
                   to={page.path}
                   disableRipple
                 >
-                  {page.label}
+                  {t(page.label)}
                 </Button>
               ))}
             </Box>
@@ -160,10 +160,10 @@ export default function Header({children}) {
                     ":hover": { color: "yellow", border: "1px yellow" },
                   }}
                   component={Link}
-                  to={logs === "Login" ? "/login" : "/signup"}
+                  to={logs === "login" ? "/login" : "/signup"}
                   disableRipple
                 >
-                  {logs}
+                  {t(logs)}
                 </Button>
               ))}
             </Box>

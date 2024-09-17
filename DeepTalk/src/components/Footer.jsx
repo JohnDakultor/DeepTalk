@@ -5,25 +5,20 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import { Typography, Link } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 export default function Footer() {
   const year = new Date().getFullYear();
-  const [language, setLanguage] = React.useState("");
-  const country = [
-    "English",
-    "French",
-    "Spanish",
-    "Portuguese",
-    "Chinese",
-    "Japanese",
-    "Korean",
-    "Hindi",
-    "Russian",
-    "German",
+  const { t, i18n } = useTranslation();
+  const languages = [
+    { code: "en", name: "English" },
+    { code: "fr", name: "French" },
+    { code: "es", name: "Spanish" },
+    // Add more languages as needed
   ];
 
   const handleChange = (event) => {
-    setLanguage(event.target.value);
+    i18n.changeLanguage(event.target.value);
   };
 
   return (
@@ -41,27 +36,27 @@ export default function Footer() {
         <footer>
           <Container>
             <Typography variant="body2" color="textSecondary" align="center">
-              Copyright © {year} Theia. All rights reserved
+              {t('copyright')} {year} Theia. {t('allRightsReserved')}
             </Typography>
             <Typography variant="body2" color="textSecondary" align="center">
               <Link color="inherit" href="/about">
-                About Us
+                {t('aboutUs')}
               </Link>{" "}
               |
               <Link color="inherit" href="/contact">
-                Contact Us
+                {t('contactUs')}
               </Link>{" "}
               |
               <Link color="inherit" href="/privacy">
-                Privacy Policy
+                {t('privacyPolicy')}
               </Link>{" "}
               |
               <Link color="inherit" href="/terms">
-                Terms of Service
+                {t('termsOfService')}
               </Link>
             </Typography>
             <Typography variant="body2" color="textSecondary" align="center">
-              Follow us on:
+              {t('followUs')}:{" "}
               <Link color="inherit" href="https://facebook.com">
                 Facebook
               </Link>{" "}
@@ -79,19 +74,17 @@ export default function Footer() {
 
         <Container>
           <FormControl sx={{ m: 1, minWidth: 120 }}>
-            <InputLabel id="demo-simple-select-helper-label">
-              Language
-            </InputLabel>
+            <InputLabel id="language-select-label">{t('language')}</InputLabel>
             <Select
-              labelId="demo-simple-select-helper-label"
-              id="demo-simple-select-helper"
-              value={language}
-              label="language"
+              labelId="language-select-label"
+              id="language-select"
+              value={i18n.language}
+              label={t('language')}
               onChange={handleChange}
             >
-              {country.map((country) => (
-                <MenuItem key={country} value={country}>
-                  {country}
+              {languages.map((lang) => (
+                <MenuItem key={lang.code} value={lang.code}>
+                  {lang.name}
                 </MenuItem>
               ))}
             </Select>

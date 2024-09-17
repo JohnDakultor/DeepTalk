@@ -27,4 +27,16 @@ body {
     border-color: var(--input-border-color) !important;
   }
   
+  .modal {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 400px !important;
+    background-color: var(--modal-color) !important;
+    color: var(--primary-text-color) !important;
+  
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
+    padding: 16px !important;
+  }
   
